@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoMark — Eco-Friendly & Sustainable Products Badge System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --forest:    #1a3a2a;
+      --moss:      #2d5a3d;
+      --leaf:      #4a9b6f;
+      --lime:      #8fcb5e;
+      --cream:     #f5f0e8;
+      --sand:      #e8dfc8;
+      --terra:     #c4623a;
+      --gold:      #d4a843;
+      --white:     #fdfcf8;
+      --dark:      #111a15;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--forest);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ══════════════════════════
+       NAV
+    ══════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 5%;
+      background: rgba(253,252,248,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(74,155,111,0.15);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem; font-weight: 900;
+      color: var(--forest); text-decoration: none;
+    }
+
+    .nav-logo .leaf-icon {
+      width: 34px; height: 34px;
+      background: var(--moss);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-logo .leaf-icon span {
+      transform: rotate(45deg);
+      font-size: 16px;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.9rem; font-weight: 500;
+      color: var(--forest); opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    .nav-cta {
+      background: var(--moss);
+      color: var(--white) !important;
+      opacity: 1 !important;
+      padding: 9px 22px;
+      border-radius: 30px;
+      font-weight: 600 !important;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--forest) !important; }
+
+    /* ══════════════════════════
+       HERO
+    ══════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 120px 5% 80px;
+      gap: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* big decorative circle */
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: -180px; top: -180px;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(143,203,94,0.18) 0%, rgba(74,155,111,0.06) 60%, transparent 80%);
+      pointer-events: none;
+    }
+
+    .hero-text { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem; letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--leaf);
+      background: rgba(74,155,111,0.1);
+      border: 1px solid rgba(74,155,111,0.3);
+      padding: 6px 14px; border-radius: 20px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--lime);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.4); }
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.8rem);
+      line-height: 1.1;
+      font-weight: 900;
+      color: var(--forest);
+      margin-bottom: 24px;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--leaf);
+    }
+
+    .hero-desc {
+      font-size: 1.08rem; line-height: 1.75;
+      color: var(--moss); max-width: 480px;
+      margin-bottom: 40px;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-actions {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .btn-primary {
+      background: var(--moss);
+      color: var(--white);
+      padding: 14px 32px;
+      border-radius: 40px;
+      font-size: 0.95rem; font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+
+    .btn-primary:hover {
+      background: var(--forest);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      border: 2px solid var(--moss);
+      color: var(--moss);
+      padding: 14px 32px;
+      border-radius: 40px;
+      font-size: 0.95rem; font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+
+    .btn-secondary:hover {
+      background: var(--moss);
+      color: var(--white);
+    }
+
+    /* hero stats pill bar */
+    .hero-stats {
+      display: flex; gap: 28px; margin-top: 48px;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+
+    .stat {
+      display: flex; flex-direction: column;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; font-weight: 700;
+      color: var(--forest);
+    }
+
+    .stat-label {
+      font-size: 0.78rem; color: var(--leaf);
+      font-weight: 500; letter-spacing: 0.04em;
+    }
+
+    .stat-divider {
+      width: 1px; background: rgba(74,155,111,0.25);
+    }
+
+    /* ── HERO CARD VISUAL ── */
+    .hero-visual {
+      display: flex; flex-direction: column; gap: 18px;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.9s 0.2s ease both;
+    }
+
+    .product-card {
+      background: var(--white);
+      border: 1px solid rgba(74,155,111,0.2);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 8px 40px rgba(26,58,42,0.1);
+      display: flex; gap: 18px; align-items: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 50px rgba(26,58,42,0.15);
+    }
+
+    .product-card.featured {
+      background: var(--forest);
+      color: var(--white);
+    }
+
+    .product-img {
+      width: 72px; height: 72px; border-radius: 14px;
+      flex-shrink: 0; display: flex; align-items: center;
+      justify-content: center; font-size: 2rem;
+    }
+
+    .product-img.bg1 { background: rgba(143,203,94,0.18); }
+    .product-img.bg2 { background: rgba(74,155,111,0.12); }
+    .product-img.bg3 { background: rgba(212,168,67,0.15); }
+
+    .product-card.featured .product-img { background: rgba(143,203,94,0.2); }
+
+    .product-info { flex: 1; }
+
+    .product-name {
+      font-weight: 600; font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .product-brand {
+      font-size: 0.78rem; opacity: 0.6;
+      margin-bottom: 10px;
+    }
+
+    .eco-score-bar {
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .score-track {
+      flex: 1; height: 6px;
+      background: rgba(74,155,111,0.15);
+      border-radius: 10px; overflow: hidden;
+    }
+
+    .score-fill {
+      height: 100%; border-radius: 10px;
+      background: linear-gradient(90deg, var(--leaf), var(--lime));
+      transition: width 1.2s ease;
+    }
+
+    .product-card.featured .score-track { background: rgba(255,255,255,0.15); }
+    .product-card.featured .score-fill { background: linear-gradient(90deg, var(--lime), #c6eb7e); }
+
+    .score-val {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem; font-weight: 700;
+      color: var(--lime);
+    }
+
+    .eco-badge {
+      flex-shrink: 0;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+    }
+
+    .badge-platinum { background: rgba(143,203,94,0.2); color: #3a8c55; }
+    .badge-gold     { background: rgba(212,168,67,0.2); color: #a07820; }
+    .badge-silver   { background: rgba(180,180,180,0.2); color: #666; }
+
+    .product-card.featured .badge-platinum {
+      background: rgba(143,203,94,0.25);
+      color: var(--lime);
+    }
+
+    /* floating impact bubble */
+    .impact-bubble {
+      position: absolute;
+      top: -20px; right: -20px;
+      background: var(--terra);
+      color: var(--white);
+      border-radius: 16px;
+      padding: 12px 18px;
+      font-size: 0.82rem; font-weight: 600;
+      box-shadow: 0 8px 24px rgba(196,98,58,0.35);
+      display: flex; align-items: center; gap: 8px;
+      animation: floatBubble 4s ease-in-out infinite;
+    }
+
+    @keyframes floatBubble {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* ══════════════════════════
+       SECTION HEADER
+    ══════════════════════════ */
+    .section {
+      padding: 96px 5%;
+      position: relative;
+    }
+
+    .section-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem; letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--leaf);
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 900;
+      color: var(--forest);
+      line-height: 1.15;
+      margin-bottom: 18px;
+    }
+
+    .section-sub {
+      font-size: 1.05rem; color: var(--moss);
+      line-height: 1.7; max-width: 520px;
+    }
+
+    /* ══════════════════════════
+       HOW IT WORKS
+    ══════════════════════════ */
+    .how-bg {
+      background: var(--forest);
+      color: var(--white);
+    }
+
+    .how-bg .section-title { color: var(--white); }
+    .how-bg .section-sub { color: rgba(255,255,255,0.65); }
+    .how-bg .section-tag { color: var(--lime); }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      margin-top: 64px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .step {
+      padding: 40px 30px;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      transition: background 0.3s;
+      cursor: default;
+    }
+
+    .step:last-child { border-right: none; }
+    .step:hover { background: rgba(255,255,255,0.05); }
+
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem; font-weight: 900;
+      color: rgba(143,203,94,0.25);
+      line-height: 1; margin-bottom: 20px;
+    }
+
+    .step-icon {
+      font-size: 2rem; margin-bottom: 18px;
+    }
+
+    .step-title {
+      font-size: 1.05rem; font-weight: 600;
+      color: var(--white); margin-bottom: 12px;
+    }
+
+    .step-desc {
+      font-size: 0.88rem; line-height: 1.65;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* ══════════════════════════
+       FEATURES (MODULES)
+    ══════════════════════════ */
+    .features-header {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: end;
+      margin-bottom: 64px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--white);
+      border: 1px solid rgba(74,155,111,0.15);
+      border-radius: 20px;
+      padding: 32px 28px;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+      cursor: default;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(26,58,42,0.1);
+      border-color: rgba(74,155,111,0.4);
+    }
+
+    .feature-card.accent {
+      background: var(--moss);
+      border-color: var(--moss);
+      color: var(--white);
+    }
+
+    .feature-icon {
+      width: 52px; height: 52px;
+      background: rgba(74,155,111,0.1);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 22px;
+    }
+
+    .feature-card.accent .feature-icon {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .feature-title {
+      font-size: 1.05rem; font-weight: 600;
+      margin-bottom: 10px; color: var(--forest);
+    }
+
+    .feature-card.accent .feature-title { color: var(--white); }
+
+    .feature-desc {
+      font-size: 0.875rem; line-height: 1.65;
+      color: var(--moss);
+    }
+
+    .feature-card.accent .feature-desc { color: rgba(255,255,255,0.7); }
+
+    /* ══════════════════════════
+       IMPACT SECTION
+    ══════════════════════════ */
+    .impact-bg {
+      background: var(--cream);
+    }
+
+    .impact-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+
+    .impact-chart-visual {
+      position: relative;
+    }
+
+    .chart-card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 12px 50px rgba(26,58,42,0.1);
+    }
+
+    .chart-title {
+      font-weight: 600; font-size: 0.9rem;
+      color: var(--forest); margin-bottom: 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .chart-title span {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem; color: var(--leaf);
+    }
+
+    .bars {
+      display: flex; align-items: flex-end;
+      gap: 10px; height: 140px;
+    }
+
+    .bar-wrap {
+      flex: 1; display: flex;
+      flex-direction: column; align-items: center; gap: 8px;
+    }
+
+    .bar {
+      width: 100%; border-radius: 6px 6px 0 0;
+      background: linear-gradient(180deg, var(--lime), var(--leaf));
+      transition: height 1.2s ease;
+      min-height: 8px;
+    }
+
+    .bar-label {
+      font-size: 0.65rem; color: var(--moss);
+      font-family: 'Space Mono', monospace;
+    }
+
+    .impact-metrics {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-top: 24px;
+    }
+
+    .metric {
+      background: rgba(74,155,111,0.07);
+      border-radius: 14px; padding: 18px;
+    }
+
+    .metric-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 700;
+      color: var(--forest);
+    }
+
+    .metric-label {
+      font-size: 0.76rem; color: var(--leaf);
+      font-weight: 500;
+    }
+
+    /* ══════════════════════════
+       ECO BADGES SHOWCASE
+    ══════════════════════════ */
+    .badges-section { background: var(--sand); }
+
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px; margin-top: 56px;
+    }
+
+    .badge-card {
+      background: var(--white);
+      border-radius: 20px; padding: 32px 24px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .badge-card:hover { transform: translateY(-4px); }
+
+    .badge-icon-big {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      margin: 0 auto 18px;
+      display: flex; align-items: center;
+      justify-content: center; font-size: 2.2rem;
+    }
+
+    .platinum-badge { background: linear-gradient(135deg, rgba(143,203,94,0.25), rgba(74,155,111,0.15)); }
+    .gold-badge     { background: linear-gradient(135deg, rgba(212,168,67,0.25), rgba(196,98,58,0.1)); }
+    .silver-badge   { background: linear-gradient(135deg, rgba(180,180,180,0.2), rgba(150,150,150,0.1)); }
+    .bronze-badge   { background: linear-gradient(135deg, rgba(196,98,58,0.2), rgba(180,130,90,0.1)); }
+
+    .badge-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--forest); margin-bottom: 8px;
+    }
+
+    .badge-range {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem; color: var(--leaf);
+      margin-bottom: 12px;
+    }
+
+    .badge-desc {
+      font-size: 0.82rem; color: var(--moss);
+      line-height: 1.6;
+    }
+
+    /* ══════════════════════════
+       INCENTIVES BANNER
+    ══════════════════════════ */
+    .incentives {
+      background: var(--forest);
+      padding: 80px 5%;
+      overflow: hidden; position: relative;
+    }
+
+    .incentives::before {
+      content: '';
+      position: absolute; left: -200px; top: -200px;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(143,203,94,0.12) 0%, transparent 70%);
+    }
+
+    .incentives-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+
+    .incentives h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 900; color: var(--white);
+      line-height: 1.15; margin-bottom: 20px;
+    }
+
+    .incentives h2 em { color: var(--lime); font-style: italic; }
+
+    .incentives p {
+      color: rgba(255,255,255,0.65);
+      line-height: 1.75; font-size: 1rem;
+      margin-bottom: 32px;
+    }
+
+    .incentive-items {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .incentive-item {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 20px;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+
+    .incentive-item .ii-icon {
+      font-size: 1.5rem; flex-shrink: 0;
+    }
+
+    .ii-title {
+      font-weight: 600; font-size: 0.9rem;
+      color: var(--white); margin-bottom: 4px;
+    }
+
+    .ii-desc {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+
+    /* ══════════════════════════
+       CTA
+    ══════════════════════════ */
+    .cta-section {
+      padding: 100px 5%;
+      text-align: center;
+      background: var(--white);
+    }
+
+    .cta-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.8rem);
+      font-weight: 900; color: var(--forest);
+      margin-bottom: 20px; line-height: 1.15;
+    }
+
+    .cta-section h2 em { color: var(--leaf); font-style: italic; }
+
+    .cta-section p {
+      color: var(--moss); font-size: 1.05rem;
+      max-width: 520px; margin: 0 auto 40px;
+      line-height: 1.75;
+    }
+
+    .cta-group {
+      display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;
+    }
+
+    /* ══════════════════════════
+       FOOTER
+    ══════════════════════════ */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.5);
+      padding: 48px 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 20px;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 900;
+      color: var(--white);
+    }
+
+    .footer-links {
+      display: flex; gap: 24px; list-style: none;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.45);
+      text-decoration: none; font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--lime); }
+
+    .footer-copy { font-size: 0.82rem; }
+
+    /* ══════════════════════════
+       ANIMATIONS
+    ══════════════════════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1; transform: translateY(0);
+    }
+
+    /* ══════════════════════════
+       SCROLLING TICKER
+    ══════════════════════════ */
+    .ticker-wrap {
+      background: var(--lime);
+      padding: 12px 0; overflow: hidden;
+    }
+
+    .ticker-track {
+      display: flex; gap: 60px;
+      white-space: nowrap;
+      animation: ticker 22s linear infinite;
+    }
+
+    .ticker-item {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--forest);
+      display: flex; align-items: center; gap: 14px;
+      flex-shrink: 0;
+    }
+
+    .ticker-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--moss); }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ══════════════════════════
+       RESPONSIVE
+    ══════════════════════════ */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding-top: 100px; }
+      .steps-grid { grid-template-columns: repeat(2,1fr); }
+      .step { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .features-header { grid-template-columns: 1fr; gap: 20px; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .impact-layout { grid-template-columns: 1fr; }
+      .badges-grid { grid-template-columns: 1fr 1fr; }
+      .incentives-layout { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 560px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .badges-grid { grid-template-columns: 1fr; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .incentive-items { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="leaf-icon"><span>🌿</span></div>
+    EcoMark
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#impact">Impact</a></li>
+    <li><a href="#badges">Badges</a></li>
+    <li><a href="#incentives">Incentives</a></li>
+    <li><a href="#" class="nav-cta">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-eyebrow">🌱 Eco-Friendly & Sustainable Products Badge System</div>
+    <h1>Shop <em>Smarter,</em><br>Live <em>Greener.</em></h1>
+    <p class="hero-desc">
+      EcoMark certifies and displays eco-scores for every product — empowering you to make
+      purchases that are good for your wallet and for the planet.
+    </p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">🌿 Explore Products</a>
+      <a href="#features" class="btn-secondary">How It Works</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">12K+</span>
+        <span class="stat-label">Products Certified</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">340T</span>
+        <span class="stat-label">CO₂ Saved (kg)</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-num">98%</span>
+        <span class="stat-label">Transparent Scoring</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div style="position:relative;">
+      <div class="impact-bubble">🌍 −2.4kg CO₂ saved today</div>
+    </div>
+
+    <!-- Featured card -->
+    <div class="product-card featured">
+      <div class="product-img bg1">🧴</div>
+      <div class="product-info">
+        <div class="product-name">Organic Bamboo Cleanser</div>
+        <div class="product-brand">EarthPure Labs · Personal Care</div>
+        <div class="eco-score-bar">
+          <div class="score-track"><div class="score-fill" style="width:92%"></div></div>
+          <span class="score-val">92</span>
+        </div>
+      </div>
+      <div class="eco-badge badge-platinum">🏆 Platinum</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img bg2">☕</div>
+      <div class="product-info">
+        <div class="product-name">Fair-Trade Arabica Blend</div>
+        <div class="product-brand">GreenRoast Co. · Food & Beverage</div>
+        <div class="eco-score-bar">
+          <div class="score-track"><div class="score-fill" style="width:78%"></div></div>
+          <span class="score-val">78</span>
+        </div>
+      </div>
+      <div class="eco-badge badge-gold">🥇 Gold</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img bg3">👟</div>
+      <div class="product-info">
+        <div class="product-name">Recycled Canvas Sneakers</div>
+        <div class="product-brand">Re:Wear · Footwear</div>
+        <div class="eco-score-bar">
+          <div class="score-track"><div class="score-fill" style="width:65%"></div></div>
+          <span class="score-val">65</span>
+        </div>
+      </div>
+      <div class="eco-badge badge-silver">🥈 Silver</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TICKER ── -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="ticker-dot"></span>Eco-Score Display</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Criteria Checklist</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Brand Badges</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Green Incentives</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Filter Eco Products</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Impact Chart</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Purchase History</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Notifications</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Admin Panel</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Export Reports</div>
+    <!-- duplicate for seamless loop -->
+    <div class="ticker-item"><span class="ticker-dot"></span>Eco-Score Display</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Criteria Checklist</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Brand Badges</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Green Incentives</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Filter Eco Products</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Impact Chart</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Purchase History</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Notifications</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Admin Panel</div>
+    <div class="ticker-item"><span class="ticker-dot"></span>Export Reports</div>
+  </div>
+</div>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="section how-bg" id="how">
+  <div style="max-width:520px;">
+    <p class="section-tag">// The Process</p>
+    <h2 class="section-title">How EcoMark Works</h2>
+    <p class="section-sub">A transparent, criteria-driven scoring engine that brings honesty to every product label.</p>
+  </div>
+
+  <div class="steps-grid">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div class="step-icon">🔬</div>
+      <div class="step-title">Analyse Product</div>
+      <p class="step-desc">We examine material composition, recyclability, energy usage, packaging impact, and supply chain carbon.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <div class="step-icon">📊</div>
+      <div class="step-title">Calculate Eco-Score</div>
+      <p class="step-desc">A weighted algorithm combines each sustainability criterion into a transparent 0–100 eco-score.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <div class="step-icon">🏅</div>
+      <div class="step-title">Assign Badge</div>
+      <p class="step-desc">Products earn Platinum, Gold, Silver, or Bronze badges displayed directly on the product listing.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">04</div>
+      <div class="step-icon">🎁</div>
+      <div class="step-title">Reward Shoppers</div>
+      <p class="step-desc">Users accumulate green points and discounts every time they choose eco-certified products.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES / MODULES ── -->
+<section class="section" id="features">
+  <div class="features-header">
+    <div>
+      <p class="section-tag">// Platform Modules</p>
+      <h2 class="section-title">Everything You Need for Sustainable Commerce</h2>
+    </div>
+    <p class="section-sub">Ten fully integrated modules covering every aspect of eco-conscious shopping — from scoring to admin management.</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-icon">🌿</div>
+      <div class="feature-title">Eco-Score Display</div>
+      <p class="feature-desc">Visual badge and numeric score prominently shown on every product card, with detailed breakdown on click.</p>
+    </div>
+    <div class="feature-card accent reveal">
+      <div class="feature-icon">✅</div>
+      <div class="feature-title">Criteria Checklist</div>
+      <p class="feature-desc">Full transparency into recyclability, packaging, material sourcing, and energy scores for every item.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">🏢</div>
+      <div class="feature-title">Brand Badge</div>
+      <p class="feature-desc">Reflects the overall sustainability commitment of manufacturers, encouraging brand-level accountability.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">🎁</div>
+      <div class="feature-title">Green Incentives</div>
+      <p class="feature-desc">Reward points, discount coupons, and cashback for eco-friendly purchasing choices.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">🔍</div>
+      <div class="feature-title">Filter Eco Products</div>
+      <p class="feature-desc">Advanced filters by badge level, score range, material type, and brand sustainability tier.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">📈</div>
+      <div class="feature-title">Impact Chart</div>
+      <p class="feature-desc">Visual dashboard showing your personal CO₂ savings, plastic reduction, and water footprint over time.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">🕒</div>
+      <div class="feature-title">Purchase History</div>
+      <p class="feature-desc">Track all past eco-purchases with their sustainability scores and cumulative environmental impact.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">🔔</div>
+      <div class="feature-title">Notifications</div>
+      <p class="feature-desc">Real-time alerts for new certified products, score updates, badge achievements, and exclusive offers.</p>
+    </div>
+    <div class="feature-card reveal">
+      <div class="feature-icon">🛡️</div>
+      <div class="feature-title">Admin Panel</div>
+      <p class="feature-desc">Manage product data, update sustainability criteria, review brand submissions, and monitor platform health.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── IMPACT ── -->
+<section class="section impact-bg" id="impact">
+  <div class="impact-layout">
+    <div>
+      <p class="section-tag">// Environmental Impact</p>
+      <h2 class="section-title">Your Purchases Are Changing the Planet</h2>
+      <p class="section-sub">Every eco-certified purchase is tracked and aggregated into a live community impact dashboard. Watch your choices matter in real time.</p>
+      <br><br>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <span style="font-size:1.4rem;">♻️</span>
+          <div>
+            <div style="font-weight:600; color:var(--forest); margin-bottom:4px;">CO₂ Reduction Tracking</div>
+            <div style="font-size:0.85rem; color:var(--moss);">Every purchase is cross-referenced with carbon emission databases to calculate your exact savings.</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <span style="font-size:1.4rem;">💧</span>
+          <div>
+            <div style="font-weight:600; color:var(--forest); margin-bottom:4px;">Water Footprint Reports</div>
+            <div style="font-size:0.85rem; color:var(--moss);">Track water usage reduction from choosing organic and locally-sourced alternatives.</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:14px; align-items:flex-start;">
+          <span style="font-size:1.4rem;">📄</span>
+          <div>
+            <div style="font-weight:600; color:var(--forest); margin-bottom:4px;">Export Reports</div>
+            <div style="font-size:0.85rem; color:var(--moss);">Download your personal or brand-level environmental impact report in PDF, CSV, or Excel format.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="impact-chart-visual reveal">
+      <div class="chart-card">
+        <div class="chart-title">
+          CO₂ Saved (kg) — Last 6 Months
+          <span>+34% vs last year</span>
+        </div>
+        <div class="bars">
+          <div class="bar-wrap"><div class="bar" style="height:55%"></div><div class="bar-label">Dec</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:70%"></div><div class="bar-label">Jan</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:60%"></div><div class="bar-label">Feb</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:85%"></div><div class="bar-label">Mar</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:78%"></div><div class="bar-label">Apr</div></div>
+          <div class="bar-wrap"><div class="bar" style="height:100%"></div><div class="bar-label">May</div></div>
+        </div>
+        <div class="impact-metrics">
+          <div class="metric">
+            <div class="metric-val">340 kg</div>
+            <div class="metric-label">CO₂ Saved</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">18 L</div>
+            <div class="metric-label">Water Saved</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">12 kg</div>
+            <div class="metric-label">Plastic Avoided</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val">4 🌳</div>
+            <div class="metric-label">Trees Equivalent</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BADGES ── -->
+<section class="section badges-section" id="badges">
+  <div style="text-align:center; max-width:580px; margin:0 auto;">
+    <p class="section-tag">// Certification Tiers</p>
+    <h2 class="section-title">The Four Eco-Badge Levels</h2>
+    <p class="section-sub">Scores range from 0–100. Higher scores unlock better badges and exclusive green rewards.</p>
+  </div>
+
+  <div class="badges-grid">
+    <div class="badge-card reveal">
+      <div class="badge-icon-big platinum-badge">🏆</div>
+      <div class="badge-name">Platinum</div>
+      <div class="badge-range">Score: 85 – 100</div>
+      <p class="badge-desc">Exceptional sustainability across all criteria. Industry-leading green practices.</p>
+    </div>
+    <div class="badge-card reveal">
+      <div class="badge-icon-big gold-badge">🥇</div>
+      <div class="badge-name">Gold</div>
+      <div class="badge-range">Score: 70 – 84</div>
+      <p class="badge-desc">Strong eco-performance with minimal environmental impact across production.</p>
+    </div>
+    <div class="badge-card reveal">
+      <div class="badge-icon-big silver-badge">🥈</div>
+      <div class="badge-name">Silver</div>
+      <div class="badge-range">Score: 50 – 69</div>
+      <p class="badge-desc">Above-average sustainability with ongoing improvements in key areas.</p>
+    </div>
+    <div class="badge-card reveal">
+      <div class="badge-icon-big bronze-badge">🥉</div>
+      <div class="badge-name">Bronze</div>
+      <div class="badge-range">Score: 30 – 49</div>
+      <p class="badge-desc">Beginning the sustainability journey with measurable positive actions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── INCENTIVES ── -->
+<section class="incentives" id="incentives">
+  <div class="incentives-layout">
+    <div>
+      <h2>Shop Green,<br>Earn <em>Rewards.</em></h2>
+      <p>Every eco-friendly purchase earns green points redeemable for discounts, cashback, and exclusive partner perks. Your wallet benefits while the planet does too.</p>
+      <a href="#" class="btn-primary">🌿 Start Earning</a>
+    </div>
+    <div class="incentive-items">
+      <div class="incentive-item reveal">
+        <span class="ii-icon">⭐</span>
+        <div>
+          <div class="ii-title">Green Points</div>
+          <p class="ii-desc">Earn 10 pts per ₹100 spent on certified products.</p>
+        </div>
+      </div>
+      <div class="incentive-item reveal">
+        <span class="ii-icon">🎟️</span>
+        <div>
+          <div class="ii-title">Eco Coupons</div>
+          <p class="ii-desc">Redeem points for discount vouchers on future orders.</p>
+        </div>
+      </div>
+      <div class="incentive-item reveal">
+        <span class="ii-icon">🏅</span>
+        <div>
+          <div class="ii-title">Badge Achievements</div>
+          <p class="ii-desc">Unlock personal eco-badges as you hit purchase milestones.</p>
+        </div>
+      </div>
+      <div class="incentive-item reveal">
+        <span class="ii-icon">💚</span>
+        <div>
+          <div class="ii-title">Cashback Offers</div>
+          <p class="ii-desc">Special cashback on top-rated Platinum certified brands.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-section">
+  <p class="section-tag" style="text-align:center;">// Join The Movement</p>
+  <h2>Make Every Cart <em>Count</em></h2>
+  <p>Join thousands of conscious shoppers who are already reducing their carbon footprint — one purchase at a time.</p>
+  <div class="cta-group">
+    <a href="#" class="btn-primary">🌿 Create Free Account</a>
+    <a href="#" class="btn-secondary">Browse Products</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">🌿 EcoMark</div>
+  <ul class="footer-links">
+    <li><a href="#">Products</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Brands</a></li>
+    <li><a href="#">Admin</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 EcoMark — Eco-Friendly & Sustainable Products Badge System</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Animate bars on scroll
+  const bars = document.querySelectorAll('.bar');
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.height = e.target.style.height;
+      }
+    });
+  }, { threshold: 0.5 });
+  bars.forEach(b => barObserver.observe(b));
+</script>
+</body>
+</html>
